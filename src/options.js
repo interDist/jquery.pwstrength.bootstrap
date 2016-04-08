@@ -75,13 +75,14 @@ defaultOptions.ui.popoverPlacement = "bottom";
 defaultOptions.ui.showStatus = false;
 defaultOptions.ui.spanError = function (options, key) {
     "use strict";
-    var text = options.ui.errorMessages[key];
+    var text = ui.localize(options, "errorMessages", key);
     if (!text) { return ''; }
     return '<span style="color: #d52929">' + text + '</span>';
 };
-defaultOptions.ui.popoverError = function (errors) {
+defaultOptions.ui.popoverError = function (options, errors) {
     "use strict";
-    var message = "<div>Errors:<ul class='error-list' style='margin-bottom: 0;'>";
+    var message = "<div>" + ui.localize(options, "errorMessages", "heading") +
+                  ":<ul class='error-list' style='margin-bottom: 0;'>";
 
     jQuery.each(errors, function (idx, err) {
         message += "<li>" + err + "</li>";
@@ -89,17 +90,21 @@ defaultOptions.ui.popoverError = function (errors) {
     message += "</ul></div>";
     return message;
 };
-defaultOptions.ui.errorMessages = {
-    wordLength: "Your password is too short",
-    wordNotEmail: "Do not use your email as your password",
-    wordSimilarToUsername: "Your password cannot contain your username",
-    wordTwoCharacterClasses: "Use different character classes",
-    wordRepetitions: "Too many repetitions",
-    wordSequences: "Your password contains sequences"
+defaultOptions.ui.language = "en";
+defaultOptions.ui.labels = {
+    en : {
+        errorMessages : {
+            heading: "Errors",
+            wordLength: "Your password is too short",
+            wordNotEmail: "Do not use your email as your password",
+            wordSimilarToUsername: "Your password cannot contain your username",
+            wordTwoCharacterClasses: "Use different character classes",
+            wordRepetitions: "Too many repetitions",
+            wordSequences: "Your password contains sequences"
+        },
+        verdicts : ["Very Weak", "Weak", "Normal", "Medium", "Strong", "Very Strong"]
+    }
 };
-defaultOptions.ui.verdicts = [
-    "Very Weak", "Weak", "Normal", "Medium", "Strong", "Very Strong"
-];
 defaultOptions.ui.showVerdicts = true;
 defaultOptions.ui.showVerdictsInsideProgressBar = false;
 defaultOptions.ui.useVerdictCssClass = false;

@@ -211,7 +211,7 @@ var ui = {};
             if (options.instances.errors.length > 0) {
                 hide = false;
             }
-            html += options.ui.popoverError(options.instances.errors);
+            html += options.ui.popoverError(options, options.instances.errors);
         }
 
         if (hide) {
@@ -268,7 +268,7 @@ var ui = {};
             level = 5;
         }
 
-        return [options.ui.verdicts[level], level];
+        return [ui.localize(options, "verdicts", level), level];
     };
 
     ui.updateUI = function (options, $el, score) {
@@ -305,5 +305,25 @@ var ui = {};
         if (options.ui.showScore) {
             ui.updateScore(options, $el, score);
         }
+    };
+
+    ui.localize = function (options, element, key) {
+        // Check if "en-GB" localization is available, if not, fallback to 2 letter code "en"
+        var lang = options.ui.language;
+        try {
+            if (!options.ui.labels[lang][element][key])
+                throw 1;
+        }
+        catch (ignored) {
+            lang = lang.split('-')[0];
+        }
+        try {
+            if (!options.ui.labels[lang][element][key])
+                throw 2;
+        }
+        catch (ignored) {
+            lang = "en";
+        }
+        return options.ui.labels[lang][element][key];
     };
 }(jQuery, ui));
